@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Character Sheet</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.3/vue.js"></script>
+    
+    <script src="clone_one.js"></script>
+
+    <link rel="stylesheet" href="components.css" />
+
+</head>
+
+<body>
+    <div id="vue-instance">
+        <sheet v-bind:character="clone_one"></sheet>
+    </div>
+
+<!--
+    Component: Sheet
+-->
+
+<template id="sheet_template">
+    <div class="sheet-component">
+        <h1>{{ character.name }}</h1>
+        <grid v-bind:items="character.edges"></grid>
+    </div>
+</template>
+
+<script type="text/javascript">
+    Vue.component('sheet', {
+        template: '#sheet_template',
+        props: ['character']
+    })
+</script>
+
+
+<!--
+    Component: Grid
+-->
+
+<template id="grid_template">
+    <ul class="grid-component">
+        <tile v-for="item in items" v-bind:item="item" :key="item.name"></tile>
+    </ul>
+</template>
+
+<script type="text/javascript">
+    Vue.component('grid', {
+        template: '#grid_template',
+        props: ['items']
+    })
+</script>
+
+
+<!--
+    Component: Tile
+-->
+
+<template id="tile_template">
+    <li class="tile-component">
+        <div class="inner-cut">
+            <span>{{item}}</span>
+        </div>
+    </li>
+</template>
+
+<script type="text/javascript">
+    Vue.component('tile', {
+        template: '#tile_template',
+        props: ['item']
+    })
+</script>
+
+
+<!--
+    Vue Instance
+-->
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#vue-instance',
+        data: {
+            clone_one: clone_one.character
+        }
+    });
+    Vue.config.devtools = true;
+</script>
+
+</body>
+</html>
