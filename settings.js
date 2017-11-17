@@ -1,0 +1,3 @@
+const LAYOUT_SCALE_FACTOR = 50;
+const LAYOUT_UNIT = "px";
+const LAYOUT_GRID_SPACING = 5;

@@ -8,20 +8,19 @@
     Grid Component
 */
 
+.grid-component {
+    position: relative;
+    margin-top: 20em;
+}
+
 /* 
     Tile Component
 */
 
 .tile-component {
     display: inline-block;
-    position: relative;
+    position: absolute;
     list-style-type:none;
-
-    width: 20em;
-    height: 17.205em;
-
-    
-    margin: 20px;
 
     overflow: hidden;
 

@@ -4,6 +4,7 @@
     <title>Character Sheet</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.3/vue.js"></script>
     
+    <script src="settings.js"></script>
     <script src="clone_one.js"></script>
 
     <link rel="stylesheet" href="components.css" />
@@ -40,14 +41,36 @@
 
 <template id="grid_template">
     <ul class="grid-component">
-        <tile v-for="item in items" v-bind:item="item" :key="item.name"></tile>
+        <tile v-for="(item, key) in items" v-bind:item="item" v-bind:style="stylePosition(position(key))"></tile>
     </ul>
 </template>
 
 <script type="text/javascript">
     Vue.component('grid', {
         template: '#grid_template',
-        props: ['items']
+        props: ['items', 'scale'],
+        methods: {
+            position: function (i) {
+                /* calculate position for tile in the grid
+                    grid coordinates represent a square, with gridX denoting the number of the row and gridY the difference from the baseline of the grid.
+                    x1 x2 x3
+                    x2 x2 x3
+                    x3 x3 x3
+                    x,y are representations in a cartesian coordinate system
+                */
+                var ordinal = i + 1;
+                var gridX, gridY, x, y;
+                gridX = Math.ceil(Math.sqrt(ordinal));
+                gridY = ordinal - Math.pow(gridX, 2) + gridX - 1;
+                x = (gridX - 1) * 3 - 1.5 * Math.abs(gridY);
+                y = gridY * Math.sqrt(3) / 2;
+                return [x, y]
+            },
+            stylePosition: function(position) {
+                /* gives css for absolute positioning */
+                return {top: position[1] * LAYOUT_SCALE_FACTOR + LAYOUT_UNIT, left: position[0] * LAYOUT_SCALE_FACTOR + LAYOUT_UNIT}
+            }
+        }
     })
 </script>
 
@@ -57,7 +80,7 @@
 -->
 
 <template id="tile_template">
-    <li class="tile-component">
+    <li class="tile-component" v-bind:style="styleSize()">
         <div class="inner-cut">
             <span>{{item}}</span>
         </div>
@@ -67,7 +90,12 @@
 <script type="text/javascript">
     Vue.component('tile', {
         template: '#tile_template',
-        props: ['item']
+        props: ['item'],
+        methods: {
+            styleSize: function () {
+                return {width: 2 * LAYOUT_SCALE_FACTOR + LAYOUT_UNIT, height: Math.sqrt(3) * LAYOUT_SCALE_FACTOR + LAYOUT_UNIT}
+            }
+        }
     })
 </script>
 
